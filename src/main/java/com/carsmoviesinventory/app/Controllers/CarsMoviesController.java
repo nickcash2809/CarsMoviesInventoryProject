@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 
 @RestController
 @RequestMapping("/api/v1/carsmovies")
-public Class CarsMoviesController{
+public class CarsMoviesController{
 
     @GetMapping
     public String getAllCarsMovies(){
