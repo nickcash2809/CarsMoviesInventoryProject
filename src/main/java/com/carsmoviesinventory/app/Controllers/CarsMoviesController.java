@@ -13,27 +13,27 @@ public class CarsMoviesController{
 
     @GetMapping
     public String getAllCarsMovies(){
-
+        return "Oye mi perro";
     }
 
     @GetMapping("/{id}")
     public String getCarsMovieById(){
-
+        return "Oye mi perro";
     }
 
     @PostMapping
     public String insertCarsMovie(){
-        
+        return "Oye mi perro";
     }
 
     @PutMapping("/{id}")
     public String updateCarsMovie(){
-        
+        return "Oye mi perro";
     }
 
     @DeleteMapping("/{id}")
     public String deleteCarsMovie(){
-        
+        return "Oye mi perro";
     }
 
 }

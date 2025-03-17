@@ -2,6 +2,7 @@ package com.carsmoviesinventory.app.Entities;
 import java.util.UUID;
 import jakarta.persistence.Id;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 
 import lombok.*;
 
