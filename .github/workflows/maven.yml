@@ -1,4 +1,4 @@
-name: Build and Deploy Spring Boot WAR
+name: Build and Deploy Spring Boot Jar
 
 on:
   push:
@@ -28,7 +28,7 @@ jobs:
           type: "credscan,java,depscan"
 
       - name: Remove target directory
-        run: rm -rf target/
+        run: sudo rm -rf target/*
 
       - name: Maven clean
         run: mvn clean
@@ -39,8 +39,8 @@ jobs:
       - name: Upload JAR file
         uses: actions/upload-artifact@v4
         with:
-          name: app-0.0.1-SNAPSHOT.jar
-          path: target/app-0.0.1-SNAPSHOT.jar
+          name: spring-boot-carsmovies.jar
+          path: target/spring-boot-carsmovies.jar
 
       - name: List target directory contents
         run: ls -l target
