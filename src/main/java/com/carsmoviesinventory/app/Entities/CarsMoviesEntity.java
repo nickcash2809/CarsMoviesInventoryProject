@@ -1,5 +1,6 @@
 package com.carsmoviesinventory.app.Entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.UUID;
@@ -9,19 +10,37 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "CARSMOVIES")
 public class CarsMoviesEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @JsonProperty("id")
     private UUID id;
 
-    @Column(name = "carMovieName", nullable = false)
+    @JsonProperty("carMovieName")
     private String carMovieName;
 
-    @Column(name = "carMovieYear", length = 4, nullable = false)
+    @JsonProperty("carMovieYear")
     private String carMovieYear;
 
-    @Column(name = "duration", nullable = false)
+    @JsonProperty("duration")
     private Integer duration;
+
+    @PrePersist
+    public void generateUUID() {
+        if (id == null) {
+            id = UUID.randomUUID();
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "CarsMoviesEntity{" +
+                "id=" + id +
+                ", carMovieName='" + carMovieName + '\'' +
+                ", carMovieYear='" + carMovieYear + '\'' +
+                ", duration=" + duration +
+                '}';
+    }
+
 }
