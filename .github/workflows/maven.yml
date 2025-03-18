@@ -22,13 +22,18 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
+      - name: Perform Security Scan
+        uses: ShiftLeftSecurity/scan-action@master
+        with:
+          type: "credscan,java,depscan"
+
       - name: Maven clean
         run: mvn clean
 
       - name: Build with Maven
         run: mvn -X package --file pom.xml
 
-      - name: Upload WAR file
+      - name: Upload JAR file
         uses: actions/upload-artifact@v4
         with:
           name: app-0.0.1-SNAPSHOT.jar
