@@ -1,6 +1,7 @@
 package com.carsmoviesinventory.app.Services;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -19,12 +20,9 @@ public class CarsMoviesService{
         this.carsMoviesRepository = carsMoviesRepository;
     }
 
-    public ResponseEntity<Map<String, Object>> getAllMovies(){
-        Map<String, Object> response = new HashMap<>();
-        List<CarsMoviesEntity> movies = carsMoviesRepository.findAll();
-        response.put("Total", movies.size());
-        response.put("Movies", movies);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+    public ResponseEntity<?> getAllMovies(Pageable pageable) {
+        Page<CarsMoviesEntity> movies = carsMoviesRepository.findAll(pageable);
+        return getResponseEntity(movies);
     }
 
     public ResponseEntity<?> getMoviesById(UUID id){
@@ -37,4 +35,20 @@ public class CarsMoviesService{
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    public ResponseEntity<?> getMoviesByName(String movieName, Pageable pageable) {
+        Page<CarsMoviesEntity> movies = carsMoviesRepository.findAllByCarMovieNameContaining(movieName, pageable);
+        return getResponseEntity(movies);
+    }
+
+    private ResponseEntity<?> getResponseEntity(Page<CarsMoviesEntity> movies) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("TotalElements", movies.getTotalElements());
+        response.put("TotalPages", movies.getTotalPages());
+        response.put("CurrentPage", movies.getNumber());
+        response.put("NumberOfElements", movies.getNumberOfElements());
+        response.put("Movies", movies.getContent());
+        return ResponseEntity.ok(response);
+    }
+
 }
