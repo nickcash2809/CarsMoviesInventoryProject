@@ -8,10 +8,7 @@ import org.springframework.stereotype.Service;
 import com.carsmoviesinventory.app.Repositories.CarsMoviesRepository;
 import com.carsmoviesinventory.app.Entities.CarsMoviesEntity;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class CarsMoviesService{
@@ -30,7 +27,14 @@ public class CarsMoviesService{
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    public CarsMoviesEntity getMoviesById(UUID id){
-        return carsMoviesRepository.findById(id).orElse(null);
+    public ResponseEntity<?> getMoviesById(UUID id){
+        Optional<CarsMoviesEntity> movie = carsMoviesRepository.findById(id);
+        if(movie.isPresent()){
+            Map<String, Object> response = new HashMap<>();
+            response.put("Movie", movie.get());
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }
