@@ -27,6 +27,9 @@ jobs:
         with:
           type: "credscan,java,depscan"
 
+      - name: Remove target directory
+        run: rm -rf target/
+
       - name: Maven clean
         run: mvn clean
 
