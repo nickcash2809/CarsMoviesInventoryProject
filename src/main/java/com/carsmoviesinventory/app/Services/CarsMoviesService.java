@@ -25,16 +25,16 @@ public class CarsMoviesService{
         return getResponseEntity(movies);
     }
 
-    public ResponseEntity<?> getMoviesById(UUID id){
+    public ResponseEntity<?> getMoviesById(UUID id) {
         Optional<CarsMoviesEntity> movie = carsMoviesRepository.findById(id);
-        if(movie.isPresent()){
+        if (movie.isEmpty()) {
             Map<String, Object> response = new HashMap<>();
-            response.put("Movie", movie.get());
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        }else{
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            response.put("Status", String.format("Movie with ID %s not found.", id));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
+        return ResponseEntity.ok(Collections.singletonMap("Movie", movie.get()));
     }
+
 
     public ResponseEntity<?> getMoviesByName(String movieName, Pageable pageable) {
         Page<CarsMoviesEntity> movies = carsMoviesRepository.findAllByCarMovieNameContaining(movieName, pageable);
@@ -49,6 +49,43 @@ public class CarsMoviesService{
         response.put("NumberOfElements", movies.getNumberOfElements());
         response.put("Movies", movies.getContent());
         return ResponseEntity.ok(response);
+    }
+
+    public ResponseEntity<?> addMovie(CarsMoviesEntity movieToAdd) {
+        Page<CarsMoviesEntity> movie = carsMoviesRepository.findAllByCarMovieNameContaining(
+                movieToAdd.getCarMovieName(),
+                Pageable.unpaged());
+        if (movie.getTotalElements() > 0) {
+            return new ResponseEntity<>(Collections.singletonMap("Status", String.format("Movie already exists with %d coincidences.", movie.getTotalElements())), HttpStatus.CONFLICT);
+        } else {
+            CarsMoviesEntity savedMovie = carsMoviesRepository.save(movieToAdd);
+            return new ResponseEntity<>(Collections.singletonMap("Status", String.format("Added Movie with ID %s", savedMovie.getId())), HttpStatus.CREATED);
+        }
+    }
+
+    public ResponseEntity<?> updateMovie(UUID id, CarsMoviesEntity movieToUpdate) {
+        Optional<CarsMoviesEntity> movie = carsMoviesRepository.findById(id);
+        if (movie.isEmpty()) {
+            return new ResponseEntity<>(Collections.singletonMap("Status", String.format("Movie with ID %s not found.", id)), HttpStatus.NOT_FOUND);
+        }
+        CarsMoviesEntity existingMovie = movie.get();
+
+        existingMovie.setCarMovieName(movieToUpdate.getCarMovieName());
+        existingMovie.setCarMovieYear(movieToUpdate.getCarMovieYear());
+        existingMovie.setDuration(movieToUpdate.getDuration());
+
+        carsMoviesRepository.save(existingMovie);
+
+        return ResponseEntity.ok(Collections.singletonMap("Status", String.format("Updated Movie with ID %s", existingMovie.getId())));
+    }
+
+    public ResponseEntity<?> deleteMovie(UUID id) {
+        Optional<CarsMoviesEntity> movie = carsMoviesRepository.findById(id);
+        if (movie.isEmpty()) {
+            return new ResponseEntity<>(Collections.singletonMap("Status", String.format("Movie with ID %s doesn't exist.", id)),HttpStatus.NOT_FOUND);
+        }
+        carsMoviesRepository.deleteById(id);
+        return ResponseEntity.ok(Collections.singletonMap("Status", String.format("Deleted Movie with ID %s", id)));
     }
 
 }
