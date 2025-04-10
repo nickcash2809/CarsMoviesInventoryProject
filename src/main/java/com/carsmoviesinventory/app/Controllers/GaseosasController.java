@@ -1,7 +1,7 @@
 package com.carsmoviesinventory.app.Controllers;
 
-import com.carsmoviesinventory.app.Entities.CarsMoviesEntity;
-import com.carsmoviesinventory.app.Services.CarsMoviesService;
+import com.carsmoviesinventory.app.Entities.GaseosasEntities;
+import com.carsmoviesinventory.app.Services.GaseosasService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -15,13 +15,13 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/v1/carsmovies")
+@RequestMapping("/api/v1/Gaseosas")
 @Validated
-public class CarsMoviesController{
+public class GaseosasController{
 
-    private final CarsMoviesService carsMoviesService;
+    private final GaseosasService carsMoviesService;
 
-    public CarsMoviesController(CarsMoviesService carsMoviesService) {
+    public GaseosasController(GaseosasService carsMoviesService) {
         this.carsMoviesService = carsMoviesService;
     }
 
@@ -32,7 +32,7 @@ public class CarsMoviesController{
         @RequestParam(defaultValue = "carMovieName,asc") String[] sort) {
         try {
                 Pageable pageable = PageRequest.of(page, size, Sort.by(parseSort(sort)));
-                return carsMoviesService.getAllMovies(pageable);
+                return carsMoviesService.getAllGaseosas(pageable);
             } catch (IllegalArgumentException e) {
                 return ResponseEntity.badRequest().body("Invalid sorting direction. Use 'asc' or 'desc'.");
             }
@@ -57,7 +57,7 @@ public class CarsMoviesController{
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getCarsMovieById(@PathVariable UUID id){
-        return carsMoviesService.getMoviesById(id);
+        return carsMoviesService.getGaseosasById(id);
     }
 
     @GetMapping("/search")
@@ -72,12 +72,12 @@ public class CarsMoviesController{
     }
 
     @PostMapping
-    public ResponseEntity<?> insertCarsMovie(@Valid @RequestBody CarsMoviesEntity carsMoviesEntity){
+    public ResponseEntity<?> insertCarsMovie(@Valid @RequestBody GaseosasEntities carsMoviesEntity){
         return carsMoviesService.addMovie(carsMoviesEntity);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateCarsMovie(@PathVariable UUID id, @Valid @RequestBody CarsMoviesEntity carsMoviesEntity){
+    public ResponseEntity<?> updateCarsMovie(@PathVariable UUID id, @Valid @RequestBody GaseosasEntities carsMoviesEntity){
         return carsMoviesService.updateMovie(id,carsMoviesEntity);
     }
 

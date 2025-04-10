@@ -1,6 +1,6 @@
-CREATE TABLE IF NOT EXISTS CARS_MOVIES_ENTITY (
+CREATE TABLE IF NOT EXISTS GASEOSAS_ENTITY (
                                     id UUID DEFAULT RANDOM_UUID() PRIMARY KEY,
-                                    car_movie_name VARCHAR(255) NOT NULL,
-                                    car_movie_year VARCHAR(4) NOT NULL,
-                                    duration INTEGER NOT NULL
+                                    GaseosaName VARCHAR(255) NOT NULL,
+                                    GaseosaSabor VARCHAR(4) NOT NULL,
+                                    Empresa INTEGER NOT NULL
 );
