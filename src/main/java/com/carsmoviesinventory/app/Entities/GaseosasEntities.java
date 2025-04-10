@@ -72,7 +72,7 @@ public class GaseosasEntities {
         return Empresa;
     }
 
-    public void setDuration(Integer Empresa) {
+    public void setEmpresa(Integer Empresa) {
         this.Empresa = Empresa;
     }
 

@@ -51,15 +51,15 @@ public class GaseosasService{
         return ResponseEntity.ok(response);
     }
 
-    public ResponseEntity<?> addMovie(GaseosasEntities movieToAdd) {
-        Page<GaseosasEntities> movie = carsMoviesRepository.findAllByCarMovieNameContaining(
-                movieToAdd.getCarMovieName(),
+    public ResponseEntity<?> addGaseosa(GaseosasEntities GaseosaToAdd) {
+        Page<GaseosasEntities> Gaseosa = GaseosasRepository.findAllByGaseosaNameContaining(
+                GaseosaToAdd.getGaseosaName(),
                 Pageable.unpaged());
-        if (movie.getTotalElements() > 0) {
-            return new ResponseEntity<>(Collections.singletonMap("Status", String.format("Movie already exists with %d coincidences.", movie.getTotalElements())), HttpStatus.CONFLICT);
+        if (Gaseosa.getTotalElements() > 0) {
+            return new ResponseEntity<>(Collections.singletonMap("Status", String.format("Movie already exists with %d coincidences.", Gaseosa.getTotalElements())), HttpStatus.CONFLICT);
         } else {
-            GaseosasEntities savedMovie = carsMoviesRepository.save(movieToAdd);
-            return new ResponseEntity<>(Collections.singletonMap("Status", String.format("Added Movie with ID %s", savedMovie.getId())), HttpStatus.CREATED);
+            GaseosasEntities savedGaseosa = GaseosasRepository.save(GaseosaToAdd);
+            return new ResponseEntity<>(Collections.singletonMap("Status", String.format("Added Movie with ID %s", savedGaseosa.getId())), HttpStatus.CREATED);
         }
     }
 
@@ -70,21 +70,21 @@ public class GaseosasService{
         }
         GaseosasEntities existingGaseosa = Gaseosa.get();
 
-        existingGaseosa.setCarMovieName(GaseosaToUpdate.getGaseosaName());
-        existingGaseosa.setCarMovieYear(GaseosaToUpdate.getGaseosaSabor());
-        existingGaseosa.setDuration(GaseosaToUpdate.getEmpresa());
+        existingGaseosa.setGaseosaName(GaseosaToUpdate.getGaseosaName());
+        existingGaseosa.setGaseosaSabor(GaseosaToUpdate.getGaseosaSabor());
+        existingGaseosa.setEmpresa(GaseosaToUpdate.getEmpresa());
 
-        carsMoviesRepository.save(existingMovie);
+       GaseosasRepository.save(existingGaseosa);
 
-        return ResponseEntity.ok(Collections.singletonMap("Status", String.format("Updated Movie with ID %s", existingMovie.getId())));
+        return ResponseEntity.ok(Collections.singletonMap("Status", String.format("Updated Movie with ID %s", existingGaseosa.getId())));
     }
 
-    public ResponseEntity<?> deleteMovie(UUID id) {
-        Optional<GaseosasEntities> movie = carsMoviesRepository.findById(id);
-        if (movie.isEmpty()) {
+    public ResponseEntity<?> deleteGaseosa(UUID id) {
+        Optional<GaseosasEntities> Gaseosa = GaseosasRepository.findById(id);
+        if (Gaseosa.isEmpty()) {
             return new ResponseEntity<>(Collections.singletonMap("Status", String.format("Movie with ID %s doesn't exist.", id)),HttpStatus.NOT_FOUND);
         }
-        carsMoviesRepository.deleteById(id);
+        GaseosasRepository.deleteById(id);
         return ResponseEntity.ok(Collections.singletonMap("Status", String.format("Deleted Movie with ID %s", id)));
     }
 

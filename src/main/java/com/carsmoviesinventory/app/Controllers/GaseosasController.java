@@ -19,20 +19,20 @@ import java.util.UUID;
 @Validated
 public class GaseosasController{
 
-    private final GaseosasService carsMoviesService;
+    private final GaseosasService GaseosasService;
 
-    public GaseosasController(GaseosasService carsMoviesService) {
-        this.carsMoviesService = carsMoviesService;
+    public GaseosasController(GaseosasService GaseosasService) {
+        this.GaseosasService = GaseosasService;
     }
 
     @GetMapping
-    public ResponseEntity<?> getAllCarsMovies(
+    public ResponseEntity<?> getAllGaseosas(
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "5") int size,
-        @RequestParam(defaultValue = "carMovieName,asc") String[] sort) {
+        @RequestParam(defaultValue = "GaseosaName,asc") String[] sort) {
         try {
                 Pageable pageable = PageRequest.of(page, size, Sort.by(parseSort(sort)));
-                return carsMoviesService.getAllGaseosas(pageable);
+                return GaseosasService.getAllGaseosas(pageable);
             } catch (IllegalArgumentException e) {
                 return ResponseEntity.badRequest().body("Invalid sorting direction. Use 'asc' or 'desc'.");
             }
@@ -56,34 +56,34 @@ public class GaseosasController{
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getCarsMovieById(@PathVariable UUID id){
-        return carsMoviesService.getGaseosasById(id);
+    public ResponseEntity<?> getGaseosasById(@PathVariable UUID id){
+        return GaseosasService.getGaseosasById(id);
     }
 
     @GetMapping("/search")
-    public ResponseEntity<?> getMoviesByName(
-            @RequestParam String movieName,
+    public ResponseEntity<?> getGaseosasByName(
+            @RequestParam String GaseosaName,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size,
-            @RequestParam(defaultValue = "carMovieName,asc") String[] sort) {
+            @RequestParam(defaultValue = "GaseosaName,asc") String[] sort) {
 
         Pageable pageable = PageRequest.of(page, size, Sort.by(parseSort(sort)));
-        return carsMoviesService.getMoviesByName(movieName, pageable);
+        return GaseosasService.getGaseosasByName(GaseosaName, pageable);
     }
 
     @PostMapping
-    public ResponseEntity<?> insertCarsMovie(@Valid @RequestBody GaseosasEntities carsMoviesEntity){
-        return carsMoviesService.addMovie(carsMoviesEntity);
+    public ResponseEntity<?> insertGaseosa(@Valid @RequestBody GaseosasEntities GaseosasEntities){
+        return GaseosasService.addGaseosa(GaseosasEntities);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateCarsMovie(@PathVariable UUID id, @Valid @RequestBody GaseosasEntities carsMoviesEntity){
-        return carsMoviesService.updateMovie(id,carsMoviesEntity);
+    public ResponseEntity<?> updateGaseosa(@PathVariable UUID id, @Valid @RequestBody GaseosasEntities carsMoviesEntity){
+        return GaseosasService.updateGaseosa(id,GaseosasEntities );
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteCarsMovie(@PathVariable UUID id){
-        return carsMoviesService.deleteMovie(id);
+    public ResponseEntity<?> deleteGaseosa(@PathVariable UUID id){
+        return GaseosasService.deleteGaseosa(id);
     }
 
 }
