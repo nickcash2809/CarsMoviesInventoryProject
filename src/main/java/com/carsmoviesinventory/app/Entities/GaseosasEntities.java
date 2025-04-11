@@ -23,12 +23,12 @@ public class GaseosasEntities {
 
     @JsonProperty("GaseosaSabor")
     @NotBlank(message = "Sabor is required")
-    @Size(min = 3, max = 100, message = "Year must be a valid 4-digit number (1900-2099)")
+    @Size(min = 3, max = 100, message = "Gaseosa name must be between 3 and 100 characters")
     private String GaseosaSabor;
 
     @JsonProperty("Empresa")
     @NotNull(message = "Empresa is required")
-    @Size(min = 3, max = 100, message= "Duration must be at least 1 minute")
+    @Size(min = 3, max = 100, message= "Gaseosa name must be between 3 and 100 characters")
     private String Empresa;
 
     @PrePersist
@@ -68,11 +68,11 @@ public class GaseosasEntities {
         this.GaseosaSabor = GaseosaSabor;
     }
 
-    public Integer getEmpresa() {
+    public String getEmpresa() {
         return Empresa;
     }
 
-    public void setEmpresa(Integer Empresa) {
+    public void setEmpresa(String Empresa) {
         this.Empresa = Empresa;
     }
 
