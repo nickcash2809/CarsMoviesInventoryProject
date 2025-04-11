@@ -29,7 +29,7 @@ public class GaseosasEntities {
     @JsonProperty("Empresa")
     @NotNull(message = "Empresa is required")
     @Size(min = 3, max = 100, message= "Duration must be at least 1 minute")
-    private Integer Empresa;
+    private String Empresa;
 
     @PrePersist
     public void generateUUID() {
