@@ -19,7 +19,6 @@ import java.util.UUID;
 @Validated
 public class GaseosasController{
 
-    private static final GaseosasEntities GaseosasEntities = null;
     private final GaseosasService GaseosasService;
 
     public GaseosasController(GaseosasService GaseosasService) {
@@ -78,7 +77,7 @@ public class GaseosasController{
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateGaseosa(@PathVariable UUID id, @Valid @RequestBody GaseosasEntities carsMoviesEntity){
+    public ResponseEntity<?> updateGaseosa(@PathVariable UUID id, @Valid @RequestBody GaseosasEntities GaseosasEntities){
         return GaseosasService.updateGaseosa(id,GaseosasEntities);
     }
 
