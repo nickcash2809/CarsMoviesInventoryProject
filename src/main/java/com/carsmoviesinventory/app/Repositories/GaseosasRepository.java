@@ -9,10 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.UUID;
 
 @Repository
-public interface GaseosasRepository extends JpaRepository<GaseosasEntities, UUID>{
+public interface GaseosasRepository extends JpaRepository<GaseosasEntities, UUID> {
 
-    Page<GaseosasEntities> findAllByGaseosaNameContaining(String GaseosaName, Pageable pageable);
-
-    @Override
-    Page<GaseosasEntities> findAll(Pageable pageable);
+    Page<GaseosasEntities> findAllByGaseosaNameContaining(String gaseosaName, Pageable pageable);
 }

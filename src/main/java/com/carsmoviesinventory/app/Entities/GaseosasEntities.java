@@ -9,6 +9,7 @@ import java.util.UUID;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "GASEOSAS_ENTITY")
 public class GaseosasEntities {
 
     @Id
@@ -19,17 +20,17 @@ public class GaseosasEntities {
     @JsonProperty("GaseosaName")
     @NotBlank(message = "Gaseosa name is required")
     @Size(min = 3, max = 100, message = "Gaseosa name must be between 3 and 100 characters")
-    private String GaseosaName;
+    private String gaseosaName;
 
     @JsonProperty("GaseosaSabor")
     @NotBlank(message = "Sabor is required")
-    @Size(min = 3, max = 100, message = "Gaseosa name must be between 3 and 100 characters")
-    private String GaseosaSabor;
+    @Size(min = 3, max = 100, message = "Gaseosa sabor must be between 3 and 100 characters")
+    private String gaseosaSabor;
 
     @JsonProperty("Empresa")
-    @NotNull(message = "Empresa is required")
-    @Size(min = 3, max = 100, message= "Gaseosa name must be between 3 and 100 characters")
-    private String Empresa;
+    @NotBlank(message = "Empresa is required")
+    @Size(min = 3, max = 100, message = "Empresa must be between 3 and 100 characters")
+    private String empresa;
 
     @PrePersist
     public void generateUUID() {
@@ -42,9 +43,9 @@ public class GaseosasEntities {
     public String toString() {
         return "GaseosasEntities{" +
                 "id=" + id +
-                ", GaseosaName='" + GaseosaName + '\'' +
-                ", GaseosaSabor='" + GaseosaSabor + '\'' +
-                ", Empresa=" + Empresa +
+                ", gaseosaName='" + gaseosaName + '\'' +
+                ", gaseosaSabor='" + gaseosaSabor + '\'' +
+                ", empresa='" + empresa + '\'' +
                 '}';
     }
 
@@ -53,27 +54,27 @@ public class GaseosasEntities {
     }
 
     public String getGaseosaName() {
-        return GaseosaName;
+        return gaseosaName;
     }
 
-    public void setGaseosaName(String GaseosaName) {
-        this.GaseosaName = GaseosaName;
+    public void setGaseosaName(String gaseosaName) {
+        this.gaseosaName = gaseosaName;
     }
 
     public String getGaseosaSabor() {
-        return GaseosaSabor;
+        return gaseosaSabor;
     }
 
-    public void setGaseosaSabor(String GaseosaSabor) {
-        this.GaseosaSabor = GaseosaSabor;
+    public void setGaseosaSabor(String gaseosaSabor) {
+        this.gaseosaSabor = gaseosaSabor;
     }
 
     public String getEmpresa() {
-        return Empresa;
+        return empresa;
     }
 
-    public void setEmpresa(String Empresa) {
-        this.Empresa = Empresa;
+    public void setEmpresa(String empresa) {
+        this.empresa = empresa;
     }
 
 }

@@ -12,80 +12,78 @@ import com.carsmoviesinventory.app.Entities.GaseosasEntities;
 import java.util.*;
 
 @Service
-public class GaseosasService{
+public class GaseosasService {
 
-    private final GaseosasRepository GaseosasRepository;
+    private final GaseosasRepository gaseosasRepository;
 
-    public GaseosasService(GaseosasRepository GaseosasRepository) {
-        this.GaseosasRepository = GaseosasRepository;
+    public GaseosasService(GaseosasRepository gaseosasRepository) {
+        this.gaseosasRepository = gaseosasRepository;
     }
 
     public ResponseEntity<?> getAllGaseosas(Pageable pageable) {
-        Page<GaseosasEntities> Gaseosas = GaseosasRepository.findAll(pageable);
-        return getResponseEntity(Gaseosas);
+        Page<GaseosasEntities> gaseosas = gaseosasRepository.findAll(pageable);
+        return getResponseEntity(gaseosas);
     }
 
     public ResponseEntity<?> getGaseosasById(UUID id) {
-        Optional<GaseosasEntities> Gaseosa = GaseosasRepository.findById(id);
-        if (Gaseosa.isEmpty()) {
+        Optional<GaseosasEntities> gaseosa = gaseosasRepository.findById(id);
+        if (gaseosa.isEmpty()) {
             Map<String, Object> response = new HashMap<>();
             response.put("Status", String.format("Gaseosa with ID %s not found.", id));
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
-        return ResponseEntity.ok(Collections.singletonMap("Movie", Gaseosa.get()));
+        return ResponseEntity.ok(Collections.singletonMap("Gaseosa", gaseosa.get()));
     }
 
-
-    public ResponseEntity<?> getGaseosasByName(String GaseosaName, Pageable pageable) {
-        Page<GaseosasEntities> Gaseosas = GaseosasRepository.findAllByGaseosaNameContaining(GaseosaName, pageable);
-        return getResponseEntity(Gaseosas);
+    public ResponseEntity<?> getGaseosasByName(String gaseosaName, Pageable pageable) {
+        Page<GaseosasEntities> gaseosas = gaseosasRepository.findAllByGaseosaNameContaining(gaseosaName, pageable);
+        return getResponseEntity(gaseosas);
     }
 
-    private ResponseEntity<?> getResponseEntity(Page<GaseosasEntities> Gaseosas) {
+    private ResponseEntity<?> getResponseEntity(Page<GaseosasEntities> gaseosas) {
         Map<String, Object> response = new HashMap<>();
-        response.put("TotalElements", Gaseosas.getTotalElements());
-        response.put("TotalPages", Gaseosas.getTotalPages());
-        response.put("CurrentPage", Gaseosas.getNumber());
-        response.put("NumberOfElements",Gaseosas.getNumberOfElements());
-        response.put("Gaseosas", Gaseosas.getContent());
+        response.put("TotalElements", gaseosas.getTotalElements());
+        response.put("TotalPages", gaseosas.getTotalPages());
+        response.put("CurrentPage", gaseosas.getNumber());
+        response.put("NumberOfElements", gaseosas.getNumberOfElements());
+        response.put("Gaseosas", gaseosas.getContent());
         return ResponseEntity.ok(response);
     }
 
-    public ResponseEntity<?> addGaseosa(GaseosasEntities GaseosaToAdd) {
-        Page<GaseosasEntities> Gaseosa = GaseosasRepository.findAllByGaseosaNameContaining(
-                GaseosaToAdd.getGaseosaName(),
+    public ResponseEntity<?> addGaseosa(GaseosasEntities gaseosaToAdd) {
+        Page<GaseosasEntities> gaseosa = gaseosasRepository.findAllByGaseosaNameContaining(
+                gaseosaToAdd.getGaseosaName(),
                 Pageable.unpaged());
-        if (Gaseosa.getTotalElements() > 0) {
-            return new ResponseEntity<>(Collections.singletonMap("Status", String.format("Movie already exists with %d coincidences.", Gaseosa.getTotalElements())), HttpStatus.CONFLICT);
+        if (gaseosa.getTotalElements() > 0) {
+            return new ResponseEntity<>(Collections.singletonMap("Status", String.format("Gaseosa already exists with %d coincidences.", gaseosa.getTotalElements())), HttpStatus.CONFLICT);
         } else {
-            GaseosasEntities savedGaseosa = GaseosasRepository.save(GaseosaToAdd);
-            return new ResponseEntity<>(Collections.singletonMap("Status", String.format("Added Movie with ID %s", savedGaseosa.getId())), HttpStatus.CREATED);
+            GaseosasEntities savedGaseosa = gaseosasRepository.save(gaseosaToAdd);
+            return new ResponseEntity<>(Collections.singletonMap("Status", String.format("Added Gaseosa with ID %s", savedGaseosa.getId())), HttpStatus.CREATED);
         }
     }
 
-    public ResponseEntity<?> updateGaseosa(UUID id, GaseosasEntities GaseosaToUpdate) {
-        Optional<GaseosasEntities> Gaseosa = GaseosasRepository.findById(id);
-        if (Gaseosa.isEmpty()) {
-            return new ResponseEntity<>(Collections.singletonMap("Status", String.format("Movie with ID %s not found.", id)), HttpStatus.NOT_FOUND);
+    public ResponseEntity<?> updateGaseosa(UUID id, GaseosasEntities gaseosaToUpdate) {
+        Optional<GaseosasEntities> gaseosa = gaseosasRepository.findById(id);
+        if (gaseosa.isEmpty()) {
+            return new ResponseEntity<>(Collections.singletonMap("Status", String.format("Gaseosa with ID %s not found.", id)), HttpStatus.NOT_FOUND);
         }
-        GaseosasEntities existingGaseosa = Gaseosa.get();
+        GaseosasEntities existingGaseosa = gaseosa.get();
 
-        existingGaseosa.setGaseosaName(GaseosaToUpdate.getGaseosaName());
-        existingGaseosa.setGaseosaSabor(GaseosaToUpdate.getGaseosaSabor());
-        existingGaseosa.setEmpresa(GaseosaToUpdate.getEmpresa());
+        existingGaseosa.setGaseosaName(gaseosaToUpdate.getGaseosaName());
+        existingGaseosa.setGaseosaSabor(gaseosaToUpdate.getGaseosaSabor());
+        existingGaseosa.setEmpresa(gaseosaToUpdate.getEmpresa());
 
-       GaseosasRepository.save(existingGaseosa);
+        gaseosasRepository.save(existingGaseosa);
 
-        return ResponseEntity.ok(Collections.singletonMap("Status", String.format("Updated Movie with ID %s", existingGaseosa.getId())));
+        return ResponseEntity.ok(Collections.singletonMap("Status", String.format("Updated Gaseosa with ID %s", existingGaseosa.getId())));
     }
 
     public ResponseEntity<?> deleteGaseosa(UUID id) {
-        Optional<GaseosasEntities> Gaseosa = GaseosasRepository.findById(id);
-        if (Gaseosa.isEmpty()) {
-            return new ResponseEntity<>(Collections.singletonMap("Status", String.format("Movie with ID %s doesn't exist.", id)),HttpStatus.NOT_FOUND);
+        Optional<GaseosasEntities> gaseosa = gaseosasRepository.findById(id);
+        if (gaseosa.isEmpty()) {
+            return new ResponseEntity<>(Collections.singletonMap("Status", String.format("Gaseosa with ID %s doesn't exist.", id)), HttpStatus.NOT_FOUND);
         }
-        GaseosasRepository.deleteById(id);
-        return ResponseEntity.ok(Collections.singletonMap("Status", String.format("Deleted Movie with ID %s", id)));
+        gaseosasRepository.deleteById(id);
+        return ResponseEntity.ok(Collections.singletonMap("Status", String.format("Deleted Gaseosa with ID %s", id)));
     }
-
 }
